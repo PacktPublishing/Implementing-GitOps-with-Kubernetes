@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webapp-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: simple-webapp-2
+  template:
+    metadata:
+      labels:
+        app: simple-webapp-2
+    spec:
+      containers:
+        - image: "ghcr.io/la-cc/simple-webapp:1.0.1"
+          name: simple-webapp-2
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080
+      securityContext:
+        runAsUser: 1000
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always

@@ -1,0 +1,8 @@
+apiVersion: v2
+name: minio-operator
+version: 1.0.0
+description: This Chart deploys minio-operator.
+dependencies:
+- name: operator
+  version: 5.0.1
+  repository: https://operator.min.io/

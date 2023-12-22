@@ -1,0 +1,24 @@
+config:
+  BRANCH: main
+  DRY_RUN: true
+  GITHUB: false
+  AZURE_DEVOPS: false
+  WITHOUT_PR: false
+
+dependencies:
+  - name: "External DNS"
+    arrayPosition: 0
+    repositoryName: bitnami/external-dns
+    sourcePath: examples/dns/external-dns
+  - name: "Kyverno"
+    arrayPosition: 0
+    repositoryName: kyverno/kyverno
+    sourcePath: examples/security/kyverno
+  - name: "minIO Operator"
+    arrayPosition: 0
+    repositoryName: minio-operator/operator
+    sourcePath: examples/storage/minio-operator
+  - name: "minIO Tenant"
+    arrayPosition: 0
+    repositoryName: minio-tenant/tenant
+    sourcePath: examples/storage/minio-tenant

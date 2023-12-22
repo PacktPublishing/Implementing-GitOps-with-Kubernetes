@@ -1,0 +1,23 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+  name: application-devteam-a
+  namespace: argocd
+spec:
+  encryptedData:
+    enableLfs: AQCMuK6ZdqBpszav4vA3K5F5kvoD2hCGr19ZoZYmhEsY6mRBPNVnhcFH5GD9pF6RqKQpvKSt18zh3difnbJ3czyQ5xeI1FmYpiuyeBmOEGfNe...
+    forceHttpBasicAuth: AQBf5U79aldO4mAMe6ZEHFbFKGH6yXn54Ki5MZcJBJTVbsF0/mVgqge+6HVoowvKUoivqp5d01HjiBH7KFDDwF+R6Txo8sYW0XI...
+    insecure: AQB4g1/T1IyOoRkl9igO5K3cG1SFOo1fub1EN2PYh9o0evG4Ynd6c9Ezlg4lz+sVORk1x7tCyHhQ2My6xbqhLx6e6Fze6A/6Hz/twpsa5AtIP...
+    password: AQAjZSIynjRukkfTsfk7ihp/UD9s4Wpo0nPFEb1tUWUAYdic94ZHjwiNjS2Z4GyEB2QiKCboA6PqJVKpetsiiOXx+H/kQCnl1duyvkAOqoRH...
+    url: AQAXsTLAn+8RBImuekH9KnigsRLo/dmxfiFkG+6adxLAxMqgYZwmEkZLDuMhvBvGi0F0LugREYoSsPRs3Cy+qQ+SF+3ie/Ew3AVfw7MDkYwmJgBVmF...
+    username: AQA1RBHngkFyWm/Xec7OeQeT8siwbgLOF6flu2Pfgg9twE3Rdm6jzmkbpRypuqKjNsgJMUenCxG6mQMqmJaCo8zyM7kGnOt76j8YaoBhnqZm...
+  template:
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/namespace-wide: "true"
+      labels:
+        argocd.argoproj.io/secret-type: repository
+      name: application-devteam-a
+      namespace: argocd

@@ -1,0 +1,19 @@
+vcluster:
+  # Resource syncers that should be enabled/disabled.
+  # Enabling syncers will impact RBAC Role and ClusterRole permissions.
+  # To disable a syncer set "enabled: false".
+  # See docs for details - https://www.vcluster.com/docs/architecture/synced-resources
+  # Configure SecurityContext of the containers in the VCluster pod
+  securityContext:
+    runAsUser: 12345
+    runAsGroup: 12345
+    runAsNonRoot: true
+
+  # Configure fsGroup
+  # The field is specified, all processes of the container are also part of the supplementary group ID 12345
+  fsGroup: 12345
+
+  # If enabled will deploy vcluster in an isolated mode with pod security
+  # standards, limit ranges and resource quotas
+  isolation:
+    enabled: true

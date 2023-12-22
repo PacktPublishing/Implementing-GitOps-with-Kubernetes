@@ -1,0 +1,37 @@
+vcluster:
+  sync:
+    ingresses:
+      enabled: true
+  syncer:
+    extraArgs:
+      - --tls-san=vcluster-a.example.com
+  ingress:
+    enabled: true
+    host: vcluster-a.example.com
+    ingressClassName: "nginx"
+    annotations:
+      nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  isolation:
+    podSecurityStandard: baseline
+    # If enabled will add node/proxy permission to the cluster role
+    # in isolation mode
+    resourceQuota:
+      enabled: true
+      quota:
+        requests.cpu: 10
+        requests.memory: 20Gi
+        requests.storage: "100Gi"
+        requests.ephemeral-storage: 50Gi
+        limits.cpu: 20
+        limits.memory: 40Gi
+        limits.ephemeral-storage: 150Gi
+        services.nodeports: 1
+        services.loadbalancers: 1
+        count/endpoints: 40
+        count/pods: 30
+        count/services: 30
+        count/secrets: 100
+        count/configmaps: 100
+        count/persistentvolumeclaims: 20

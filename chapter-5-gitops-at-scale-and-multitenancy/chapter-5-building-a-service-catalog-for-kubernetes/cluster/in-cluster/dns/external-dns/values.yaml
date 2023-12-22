@@ -1,0 +1,4 @@
+external-dns:
+  domainFilters:
+    - your-domain.com
+  txtOwnerId: "in-cluster-dev"

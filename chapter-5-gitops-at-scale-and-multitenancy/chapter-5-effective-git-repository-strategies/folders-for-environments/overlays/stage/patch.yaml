@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webapp
+spec:
+  replicas: 2
+  template:
+    spec:
+      containers:
+        - image: "ghcr.io/la-cc/simple-webapp:1.1.4-feature-login"
+          name: simple-webapp

@@ -1,0 +1,18 @@
+# Helm
+charts/
+Chart.lock
+
+# Docker
+.DS_Store
+.dockerignore
+docker-compose.yml
+Dockerfile
+
+# Kubernetes
+*.env
+
+# Argo CD
+argocd/
+
+# macOS
+.DS_Store

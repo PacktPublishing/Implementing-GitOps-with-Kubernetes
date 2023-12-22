@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-app
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git
+    targetRevision: main
+    path: ./chapter-5-gitops-at-scale-and-multitenancy/chapter-5-the-app-of-apps-approach/chapter-5-the-app-of-apps-approach/app-of-app/simple-webapp
+    directory:
+      recurse: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: app-of-app
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true

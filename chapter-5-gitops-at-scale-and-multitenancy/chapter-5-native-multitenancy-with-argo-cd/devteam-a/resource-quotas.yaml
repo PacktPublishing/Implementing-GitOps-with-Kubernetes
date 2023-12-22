@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: resource-quotas-ns-devteam-a
+  namespace: devteam-a
+spec:
+  hard:
+    limits.cpu: "20"
+    limits.ephemeral-storage: 100Gi
+    limits.memory: 40Gi
+    requests.cpu: "10"
+    requests.ephemeral-storage: 50Gi
+    requests.memory: 20Gi
+    requests.storage: 100Gi
+    services.loadbalancers: "1"
+    pods: "20"

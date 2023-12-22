@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-webapp-clusterip
+spec:
+  selector:
+    app: simple-webapp
+  ports:
+    - port: 80
+      targetPort: 8080

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-webapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-webapp
+  template:
+    metadata:
+      labels:
+        app: simple-webapp
+    spec:
+      containers:
+        - image: "ghcr.io/la-cc/simple-webapp:1.1.0-stable"
+          name: simple-webapp
+          env:
+            - name: UI_X_COLOR
+              value: darkblue
+            - name: SUBSCRIPTION_TIER #business-related values
+              value: silver

@@ -1,0 +1,5 @@
+cert-manager:
+  resources:
+    requests:
+      cpu: 1000m
+      memory: 1000Mi

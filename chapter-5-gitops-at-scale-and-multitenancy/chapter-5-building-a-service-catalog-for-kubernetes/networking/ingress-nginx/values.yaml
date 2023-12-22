@@ -1,0 +1,26 @@
+ingress-nginx:
+  controller:
+    allowSnippetAnnotations: true
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 250m
+      limits:
+        memory: 500Mi
+        cpu: 500m
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: false
+    setAsDefaultIngress: true
+    extraArgs:
+      enable-ssl-passthrough: true
+  defaultBackend:
+    enabled: true
+    resources:
+      requests:
+        memory: 50Mi
+        cpu: 100m
+      limits:
+        memory: 100Mi
+        cpu: 150m

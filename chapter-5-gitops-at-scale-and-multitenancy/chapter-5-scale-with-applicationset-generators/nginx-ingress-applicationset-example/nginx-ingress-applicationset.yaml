@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            env: dev #cluster label
+        values:
+          branch: main #point to main branch
+    - clusters:
+        selector:
+          matchLabels:
+            env: prod #cluster label
+        values:
+          branch: main #point to main branch
+  template:
+    metadata:
+      name: "{{name}}-ingress-nginx" #name of cluster + name of application
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: ".;.."
+    spec:
+      project: default
+      sources:
+        - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git #custom values repo
+          targetRevision: main #point to main branch of custom values repo
+          ref: valuesRepo #use valuesRepo variable
+        - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git #umbrella repo
+          targetRevision: "{{values.branch}}" #point to the branch depending on the cluster branch pointer
+          path: "./chapter-5-gitops-at-scale-and-multitenancy/chapter-5-building-a-service-catalog-for-kubernetes/networking/ingress-nginx" #path to the application in the umbrella repo
+          helm:
+            releaseName: "ingress-nginx" # Release name override (defaults to application name)
+            valueFiles:
+              - "values.yaml" #use values.yaml from umbrella repo
+              - "$valuesRepo/chapter-5-gitops-at-scale-and-multitenancy/chapter-5-building-a-service-catalog-for-kubernetes/cluster/{{name}}/networking/ingress-nginx/values.yaml" #override umbrella values from custom values repo
+      destination:
+        name: "{{name}}"
+        namespace: "ingress-nginx"
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
