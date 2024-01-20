@@ -1,0 +1,8 @@
+apiVersion: v2
+name: argocd
+version: 1.0.0
+description: This Chart deploys argoc cd by default.
+dependencies:
+  - name: argo-cd
+    version: 5.51.6
+    repository: https://argoproj.github.io/argo-helm

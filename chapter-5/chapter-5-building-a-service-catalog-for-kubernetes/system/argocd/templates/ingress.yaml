@@ -1,0 +1,31 @@
+{{- if .Values.ingress -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.className }}
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-passthrough: {{ .Values.ingress.sslPassthrough | default "false" | quote }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.issuer }}
+    cert-manager.io/renew-before: 360h #15 days
+    cert-manager.io/common-name: {{ .Values.ingress.host }}
+    kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argocd
+                port:
+                  name: https
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.secretName | default "argocd-secret" }}  # do not change, this is provided by Argo CD
+{{- end -}}

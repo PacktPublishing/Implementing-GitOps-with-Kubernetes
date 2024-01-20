@@ -11,8 +11,5 @@ Dockerfile
 # Kubernetes
 *.env
 
-# Argo CD
-argocd/
-
 # macOS
 .DS_Store
