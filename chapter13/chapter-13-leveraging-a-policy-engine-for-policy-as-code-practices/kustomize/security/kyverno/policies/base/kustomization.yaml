@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - argocd-application-field-validation.yaml
+  - argocd-application-prevent-default-project.yaml
+  - argocd-application-prevent-updates-project.yaml
+  - disallow-container-sock-mounts.yaml
+  - disallow-empty-ingress-host.yaml
+  - disallow-latest-tag.yaml
+  - drop-all-capabilities.yaml
+  - drop-cap-net-raw.yaml
+  - require-labels.yaml
+  - require-pod-probes.yaml
+  - require-requests-limits.yaml
+  - require-ro-rootfs.yaml
+  - restrict-deprecated-registry.yaml
+  - restrict-nodeport.yaml

@@ -1,0 +1,8 @@
+apiVersion: v2
+name: external-secrets
+version: 1.0.0
+description: This Chart deploys external-secrets secrets.
+dependencies:
+  - name: external-secrets
+    version: "0.9.13"
+    repository: https://charts.external-secrets.io

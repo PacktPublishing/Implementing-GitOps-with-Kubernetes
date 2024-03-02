@@ -1,0 +1,17 @@
+sealed-secrets:
+  crd:
+    create: false
+  resources:
+    requests:
+      memory: 75Mi
+      cpu: 75m
+    limits:
+      memory: 125Mi
+      cpu: 250m
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  containerSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
+    allowPrivilegeEscalation: false
