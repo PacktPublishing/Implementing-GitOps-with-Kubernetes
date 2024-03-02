@@ -9,14 +9,12 @@ spec:
         selector:
           matchLabels:
             env: dev
-            security-basic: enabled
         values:
           branch: development
     - clusters:
         selector:
           matchLabels:
             env: prod
-            security-basic: enabled
         values:
           branch: main
   template:
