@@ -35,7 +35,7 @@ spec:
             releaseName: "opencost"
             valueFiles:
               - "values.yaml"
-              - $valuesRepo/chapter-14-forecasting-and-monitoring-costs-with-gitops/cluster/{{name}}/optimization/opencost/values.yaml
+              - $valuesRepo/chapter14/chapter-14-forecasting-and-monitoring-costs-with-gitops/cluster/{{name}}/optimization/opencost/values.yaml
       destination:
         name: "{{name}}"
         namespace: "opencost"
