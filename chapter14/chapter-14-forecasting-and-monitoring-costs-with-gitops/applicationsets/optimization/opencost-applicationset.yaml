@@ -34,7 +34,7 @@ spec:
           helm:
             releaseName: "opencost"
             valueFiles:
-              # - "values.yaml"
+              - "values.yaml"
               - $valuesRepo/chapter-14-forecasting-and-monitoring-costs-with-gitops/cluster/{{name}}/optimization/opencost/values.yaml
       destination:
         name: "{{name}}"
