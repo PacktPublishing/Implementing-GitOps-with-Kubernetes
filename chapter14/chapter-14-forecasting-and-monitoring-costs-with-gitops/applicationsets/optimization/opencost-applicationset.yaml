@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: opencost
+  namespace: argocd
+spec:
+  generators:
+    - clusters:
+        selector:
+          matchLabels:
+            env: dev
+        values:
+          branch: development
+    - clusters:
+        selector:
+          matchLabels:
+            env: prod
+        values:
+          branch: main
+  template:
+    metadata:
+      name: "{{name}}-opencost"
+      annotations:
+        argocd.argoproj.io/manifest-generate-paths: ".;.."
+    spec:
+      project: default
+      sources:
+        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+          targetRevision: main
+          ref: valuesRepo
+        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+          targetRevision: "{{values.branch}}"
+          path: "./chapter14/chapter-14-forecasting-and-monitoring-costs-with-gitops/optimization/opencost"
+          helm:
+            releaseName: "opencost"
+            valueFiles:
+              # - "values.yaml"
+              - $valuesRepo/chapter-14-forecasting-and-monitoring-costs-with-gitops/cluster/{{name}}/optimization/opencost/values.yaml
+      destination:
+        name: "{{name}}"
+        namespace: "opencost"
+      syncPolicy:
+        automated:
+          prune: false
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+        retry:
+          limit: 5
