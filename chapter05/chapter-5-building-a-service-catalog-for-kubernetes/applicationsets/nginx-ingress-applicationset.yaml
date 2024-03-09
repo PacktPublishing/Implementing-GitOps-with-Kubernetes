@@ -27,17 +27,17 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git #custom values repo
+        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git #custom values repo
           targetRevision: main #point to main branch of custom values repo
           ref: valuesRepo #use valuesRepo variable
-        - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git #umbrella repo
+        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git #umbrella repo
           targetRevision: "{{values.branch}}" #point to the branch depending on the cluster branch pointer
-          path: "./chapter-5-gitops-at-scale-and-multitenancy/chapter-5-building-a-service-catalog-for-kubernetes/networking/ingress-nginx" #path to the application in the umbrella repo
+          path: "./chapter05/chapter-5-building-a-service-catalog-for-kubernetes/networking/ingress-nginx" #path to the application in the umbrella repo
           helm:
             releaseName: "ingress-nginx" # Release name override (defaults to application name)
             valueFiles:
               - "values.yaml" #use values.yaml from umbrella repo
-              - "$valuesRepo/chapter-5-gitops-at-scale-and-multitenancy/chapter-5-building-a-service-catalog-for-kubernetes/cluster/{{name}}/networking/ingress-nginx/values.yaml" #override umbrella values from custom values repo
+              - "$valuesRepo/chapter05/chapter-5-building-a-service-catalog-for-kubernetes/cluster/{{name}}/networking/ingress-nginx/values.yaml" #override umbrella values from custom values repo
       destination:
         name: "{{name}}"
         namespace: "ingress-nginx"

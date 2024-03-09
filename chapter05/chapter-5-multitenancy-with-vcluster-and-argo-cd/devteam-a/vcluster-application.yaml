@@ -9,20 +9,20 @@ spec:
     namespace: vcluster-team-a
     server: "https://kubernetes.default.svc"
   sources:
-    - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git
+    - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
       targetRevision: main
       ref: valuesRepo
-    # - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git
-    #   path: "./chapter-5-gitops-at-scale-and-multitenancy/chapter-5-building-a-service-catalog-for-kubernetes/cluster/vcluster-team-a/"
+    # - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+    #   path: "./chapter05/chapter-5-building-a-service-catalog-for-kubernetes/cluster/vcluster-team-a/"
     #   targetRevision: main
-    - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git
+    - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
       targetRevision: main
-      path: "./chapter-5-gitops-at-scale-and-multitenancy/chapter-5-building-a-service-catalog-for-kubernetes/optimization/vcluster"
+      path: "./chapter05/chapter-5-building-a-service-catalog-for-kubernetes/optimization/vcluster"
       helm:
         releaseName: "vcluster-team-a"
         valueFiles:
           - "values.yaml"
-          - "$valuesRepo/chapter-5-gitops-at-scale-and-multitenancy/chapter-5-building-a-service-catalog-for-kubernetes/cluster/vcluster-team-a/optimization/vcluster/values.yaml"
+          - "$valuesRepo/chapter05/chapter-5-building-a-service-catalog-for-kubernetes/cluster/vcluster-team-a/optimization/vcluster/values.yaml"
   project: default
   syncPolicy:
     automated:

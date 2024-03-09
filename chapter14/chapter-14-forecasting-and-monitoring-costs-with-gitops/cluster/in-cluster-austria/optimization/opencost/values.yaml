@@ -1,0 +1,22 @@
+opencost:
+  opencost:
+    customPricing:
+      # -- Enables custom pricing for on-premise setup.
+      enabled: true
+      configmapName: custom-pricing-model
+      # -- Path for the pricing configuration.
+      configPath: /tmp/custom-config
+      # -- Configures the pricing model provided in the values file.
+      createConfigmap: true
+      # -- More information about these values here: https://www.opencost.io/docs/configuration/on-prem#custom-pricing-using-the-opencost-helm-chart
+      costModel:
+        description: Modified prices based on your internal pricing
+        CPU: 1.0
+        spotCPU: 0.006900
+        RAM: 0.75
+        spotRAM: 0.000999
+        GPU: 1.25
+        storage: 0.2
+        zoneNetworkEgress: 0.02
+        regionNetworkEgress: 0.02
+        internetNetworkEgress: 0.15

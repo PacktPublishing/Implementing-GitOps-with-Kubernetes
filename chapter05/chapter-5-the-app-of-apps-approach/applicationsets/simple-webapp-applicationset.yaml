@@ -19,9 +19,9 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: git@github.com:la-cc/packt-gitops-for-kubernetes-deployments.git
+        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
           targetRevision: "{{values.branch}}"
-          path: ./chapter-5-gitops-at-scale-and-multitenancy/chapter-5-the-app-of-apps-approach/app-of-app/simple-webapp
+          path: ./chapter05/chapter-5-the-app-of-apps-approach/app-of-app/simple-webapp
       destination:
         name: "{{name}}"
         namespace: "argocd"
