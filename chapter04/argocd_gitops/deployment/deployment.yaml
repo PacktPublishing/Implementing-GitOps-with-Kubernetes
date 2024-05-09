@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zurich-weather-app
+  labels:
+    app: zurich-weather-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zurich-weather-app
+  template:
+    metadata:
+      labels:
+        app: zurich-weather-app
+    spec:
+      containers:
+      - name: zurich-weather-app
+        image: pietrolibro/zurich-weather-app:1.0
+        ports:
+        - containerPort: 8080
+        # resources:
+        #   requests:
+        #     memory: "64Mi"
+        #     cpu: "250m"
+        #   limits:
+        #     memory: "128Mi"
+        #     cpu: "500m"

@@ -1,0 +1,5 @@
+namespace: gitops-k8s-kustomize-dev
+resources:
+  - ../../base
+patches:
+  - path: ./patches/deployment_patch.yaml

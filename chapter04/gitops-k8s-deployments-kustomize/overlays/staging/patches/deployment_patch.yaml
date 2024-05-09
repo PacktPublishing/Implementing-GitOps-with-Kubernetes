@@ -1,0 +1,8 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-k8s-kustomize
+  labels:
+    environment: staging
+spec:
+  replicas: 3  # Increase the number of replicas in staging.

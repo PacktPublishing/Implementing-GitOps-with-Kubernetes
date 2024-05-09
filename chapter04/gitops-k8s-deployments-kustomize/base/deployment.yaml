@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitops-k8s-kustomize
+  labels:
+    app: gitops-k8s-kustomize
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitops-k8s-kustomize
+  template:
+    metadata:
+      labels:
+        app: gitops-k8s-kustomize
+    spec:
+      containers:
+      - name: gitops-k8s-kustomize
+        image: k8s.gcr.io/echoserver:1.10
+        ports:
+        - containerPort: 8080

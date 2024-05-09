@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Temperature Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.0.0"></script>
+</head>
+<body>
+    <canvas id="temperatureChart" width="600" height="400"></canvas>
+    <script>
+        Papa.parse("data.csv", {
+            download: true,
+            header: true,
+            complete: function(results) {
+                var labels = results.data.map(function(e) {
+                    return e.Date;
+                });
+                var data = results.data.map(function(e) {
+                    return e.Temperature;
+                });
+                var ctx = document.getElementById('temperatureChart').getContext('2d');
+                var temperatureChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Daily Temperature in Zurich',
+                            data: data,
+                            borderColor: 'rgb(75, 192, 192)',
+                            tension: 0.1
+                        }]
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
