@@ -44,4 +44,4 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-  type: LoadBalancer # We are using LoadBalancer type to get a public ip address.
+  type: LoadBalancer                  # We are using LoadBalancer type to get a public ip address.
