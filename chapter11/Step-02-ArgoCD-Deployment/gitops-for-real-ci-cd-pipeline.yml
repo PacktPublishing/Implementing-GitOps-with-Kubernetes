@@ -1,0 +1,254 @@
+name: 'Terraform Plan/Apply'
+
+on:
+  push:
+    branches:
+    - main
+    # This approach ensures that your CI/CD pipeline does not trigger when changes are made to files in the Step-01/deployment directory. 
+    # However, if other changes are made along with the manifest changes, the workflow will still run.
+    paths-ignore:
+      - 'Step-01/deployment/**'
+  pull_request:
+    branches:
+    - main
+    # This approach ensures that your CI/CD pipeline does not trigger when changes are made to files in the Step-01/deployment directory. 
+    # However, if other changes are made along with the manifest changes, the workflow will still run.    
+    paths-ignore:
+      - 'Step-01/deployment/**'
+    
+jobs:
+  terraform-plan:
+    name: 'Terraform Plan'
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # Azure Login
+    - name: Login to Azure (Using Service Principal)
+      run:  |
+        az login --service-principal \
+          --username ${{ secrets.ARM_CLIENT_ID }} \
+          --password ${{ secrets.ARM_CLIENT_SECRET }} \
+          --tenant ${{ secrets.ARM_TENANT_ID }}
+
+    # Install the latest version of the Terraform CLI
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.8.3        
+
+    # Initialize a new or existing Terraform working directory.
+    - name: Terraform Init
+      run: |
+        terraform init \
+        -backend-config="resource_group_name=${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}" \
+        -backend-config="storage_account_name=${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}" \
+        -backend-config="container_name=${{ secrets.BACKEND_CONTAINER_NAME }}" \
+        -backend-config="key=${{ secrets.BACKEND_KEY }}" \
+        --reconfigure
+      working-directory: ./Step-01/terraform
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    # Generates an execution plan for Terraform
+    # An exit code of 0 indicated no changes, 1 a terraform failure, 2 there are pending changes.
+    - name: Terraform Plan
+      id: tf-plan      
+      run: |
+        export exitcode=0
+        terraform plan -detailed-exitcode -no-color -out weather-app-tf.plan || export exitcode=$?        
+        
+        echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
+        
+        if [ $exitcode -eq 1 ]; then
+          echo Terraform Plan Failed!
+          exit 1
+        else 
+          exit 0
+        fi
+      working-directory: ./Step-01/terraform
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        
+    # Save plan to artifacts
+    - name: Publish Terraform Plan
+      uses: actions/upload-artifact@v4
+      with:
+        name: weather-tf-plan
+        path: ./Step-01/terraform/weather-app-tf.plan
+                
+  terraform-apply:
+    name: 'Terraform Apply'
+    runs-on: ubuntu-latest
+    needs: [terraform-plan]
+    
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    # Azure Login
+    - name: Login to Azure (Using Service Principal)
+      run:  |
+        az login --service-principal \
+        --username ${{ secrets.ARM_CLIENT_ID }} \
+        --password ${{ secrets.ARM_CLIENT_SECRET }} \
+        --tenant ${{ secrets.ARM_TENANT_ID }}
+
+    # Install the latest version of the Terraform CLI
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.8.3
+
+    # Initialize a new or existing Terraform working directory.
+    - name: Terraform Init
+      run: |
+        terraform init \
+        -backend-config="resource_group_name=${{ secrets.BACKEND_RESOURCE_GROUP_NAME }}" \
+        -backend-config="storage_account_name=${{ secrets.BACKEND_STORAGE_ACCOUNT_NAME }}" \
+        -backend-config="container_name=${{ secrets.BACKEND_CONTAINER_NAME }}" \
+        -backend-config="key=${{ secrets.BACKEND_KEY }}" \
+        --reconfigure
+      working-directory: ./Step-01/terraform
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+    # Download saved plan from artifacts  
+    - name: Download Terraform Plan
+      uses: actions/download-artifact@v4
+      with:
+        name: weather-tf-plan
+
+    - name: Directory's content
+      run: |
+        echo "Copying the terraform plan."
+        cp ./weather-app-tf.plan ./Step-01/terraform/weather-app-tf.plan
+
+    # Terraform Apply
+    - name: Terraform Apply
+      run: terraform apply -auto-approve weather-app-tf.plan
+      working-directory: ./Step-01/terraform
+      env:
+        ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+
+  # Build and push the Docker image.
+  docker-build-and-push:
+
+    name: 'Build and Push Docker Image'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Check out the repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_TOKEN }} 
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          context: ./Step-01/
+          file: ./Step-01/dockerfile
+          tags: ${{ secrets.DOCKER_USERNAME }}/weather-app-backend-api:v${{ github.sha }}
+
+      - name: Update Kubernetes manifests
+        run: |
+          cd ./Step-01/deployment
+          sed -i 's|image: ${{ secrets.DOCKER_USERNAME }}/weather-app-backend-api:.*|image: ${{ secrets.DOCKER_USERNAME }}/weather-app-backend-api:v${{ github.sha }} |' backend-api-deployment.yaml
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -am "Update image tag to v${{ github.sha }}"
+          git push
+
+  argo-cd-deployment:
+    name: 'Setup ArgoCD on AKS'
+    runs-on: ubuntu-latest
+    needs: [docker-build-and-push, terraform-apply]
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Azure Login
+    - name: Login to Azure (Using Service Principal)
+      run:  |
+        az login --service-principal \
+        --username ${{ secrets.ARM_CLIENT_ID }} \
+        --password ${{ secrets.ARM_CLIENT_SECRET }} \
+        --tenant ${{ secrets.ARM_TENANT_ID }}
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: v1.29.3
+
+    - name: Update Kubeconfig
+      run: az aks get-credentials --resource-group gitops-for-real-rg --name gitops-real-aks --overwrite-existing
+
+    - name: Setup ArgoCD
+      run: |
+        echo Move to ArgoCD deployment directory
+        cd ./Step-01/scripts
+
+        echo Install ArgoCD CLI tool
+        curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+        sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+        rm argocd-linux-amd64
+
+        echo Install ArgoCD on deployed Kubenetes cluster
+        kubectl create namespace argocd --dry-run=client -o yaml | kubectl apply -f -
+        kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+        echo Patch the ArgoCD server service to use LoadBalancer
+        kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+        echo Get the external IP of the LoadBalancer
+        chmod +x get-argo-cd-external-ip.sh
+        source get-argo-cd-external-ip.sh
+
+        echo Grab the initial password
+        chmod +x get-argo-cd-initial-password.sh
+        source get-argo-cd-initial-password.sh
+
+        echo Log In to ARGO CD
+        argocd login $EXTERNAL_IP --username admin --password $ARGO_CD_PASSWORD --insecure
+
+        argocd repo add https://github.com/pietrolibro/gitops-for-real-world.git \
+          --username ${{ secrets.REPO_USER }} \
+          --password ${{ secrets.REPO_TOKEN }}
+
+    - name: Deploy ArgoCD Application
+      run: |
+        echo Move to ArgoCD deployment directory
+        cd ./Step-01/ArgoCD-GitOps
+
+        echo Create ArgoCD Application
+        kubectl create namespace weather-app-for-real --dry-run=client -o yaml | kubectl apply -f -
+        kubectl apply -f argocd_deployment.yaml

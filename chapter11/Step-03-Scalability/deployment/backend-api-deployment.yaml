@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-api-weather-app
+  namespace: weather-app-for-real
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-api-weather-app
+  template:
+    metadata:
+      labels:
+        app: backend-api-weather-app
+    spec:
+      containers:
+      - name: weather-app-backend-api
+        image: pietrolibro/weather-app-backend-api:v2.0
+        imagePullPolicy: Always       # Forces Kubernetes to always pull the image
+        ports:
+        - containerPort: 80
+        env:
+        - name: WEATHER_API_KEY       # Environment variable your app uses to access the API key
+          valueFrom:
+            secretKeyRef:
+              name: weather-api-key   # The name of the Kubernetes Secret
+              key: WEATHER_API_KEY    # The key of the data stored in the Secret
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+          limits:
+            cpu: "150m"
+            memory: "150Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-api-service
+  namespace: weather-app-for-real
+spec:
+  selector:
+    app: backend-api-weather-app
+  ports:
+    - protocol: TCP
+      port: 80
+  type: LoadBalancer # We are using LoadBalancer type to get a public ip address.

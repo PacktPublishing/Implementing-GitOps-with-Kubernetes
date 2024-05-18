@@ -1,0 +1,13 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: weather-app-backend-api-hpa
+  namespace: weather-app-for-real
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend-api-weather-app
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 5

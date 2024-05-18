@@ -1,0 +1,14 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backend-api-weather-app
+  namespace: argocd 
+spec:
+  destination: 
+    namespace: weather-app-for-real
+    server: https://kubernetes.default.svc 
+  project: default 
+  source:
+    repoURL: https://github.com/pietrolibro/gitops-for-real-world
+    path: ./Step-01/deployment
+    targetRevision: main

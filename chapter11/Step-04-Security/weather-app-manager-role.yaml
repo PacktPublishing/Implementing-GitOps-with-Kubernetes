@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: weather-app-for-real
+  name: weather-app-manager
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["deployments", "replicasets", "pods", "services"]
+  verbs: ["get", "list", "watch", "create", "update", "delete"]

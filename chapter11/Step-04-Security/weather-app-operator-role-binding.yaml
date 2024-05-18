@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: weather-app-operator-binding
+  namespace: weather-app-for-real
+subjects:
+- kind: User
+  name: weather-app-operator
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: weather-app-operator
+  apiGroup: rbac.authorization.k8s.io
