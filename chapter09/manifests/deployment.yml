@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: myweatherappv1 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myweatherappv1
+  template:
+    metadata:
+      labels:
+        app: myweatherappv1 
+    spec:
+      containers:
+        - name: myweatherappv1 
+          image: aksgitops3003204acr.azurecr.io/myweatherappv1
+          ports:
+          - containerPort: 8080

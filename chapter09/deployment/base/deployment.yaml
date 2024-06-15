@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-city-weather-app
+  # namespace: gitopsk8sdeployments
+  labels:
+    app: my-city-weather-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-city-weather-app
+  template:
+    metadata:
+      labels:
+        app: my-city-weather-app
+    spec:
+      containers:
+      - name: my-city-weather-app
+        image: 637423230075.dkr.ecr.eu-central-1.amazonaws.com/weather-app:latest
+        ports:
+        - containerPort: 8080
