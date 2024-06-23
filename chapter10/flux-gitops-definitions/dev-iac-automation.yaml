@@ -1,0 +1,36 @@
+apiVersion: infra.contrib.fluxcd.io/v1alpha2
+kind: Terraform
+metadata:
+  name: dev-cluster-tf-automation
+  namespace: flux-system
+spec:
+  interval: 1m
+  approvePlan: auto
+  destroyResourcesOnDeletion: true
+  path: ./multi-env/iac/azure/dev
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  runnerPodTemplate:
+    spec:
+      env:
+        - name: ARM_SUBSCRIPTION_ID
+          valueFrom:
+            secretKeyRef:
+              name: azure-creds
+              key: ARM_SUBSCRIPTION_ID
+        - name: ARM_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: azure-creds
+              key: ARM_CLIENT_ID
+        - name: ARM_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: azure-creds
+              key: ARM_CLIENT_SECRET
+        - name: ARM_TENANT_ID
+          valueFrom:
+            secretKeyRef:
+              name: azure-creds
+              key: ARM_TENANT_ID

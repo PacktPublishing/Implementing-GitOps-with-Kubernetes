@@ -1,0 +1,12 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: gitops-terraform-repository
+  namespace: flux-system
+spec:
+  interval: 1m  # Sync interval
+  url: "https://github.com/[YOUR_REPOSITORY_GOES_HERE]"
+  secretRef:
+    name: github-repository-secret
+  ref:
+    branch: develop  # Specify the branch to track

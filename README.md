@@ -1,1 +1,1 @@
-# GitOps-for-Kubernetes-Deployment
+# gitops-book-chapter-10
