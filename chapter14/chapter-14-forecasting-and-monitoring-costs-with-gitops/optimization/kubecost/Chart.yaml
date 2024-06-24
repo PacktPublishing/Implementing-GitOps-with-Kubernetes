@@ -1,0 +1,8 @@
+apiVersion: v2
+name: kubecost
+version: 1.0.0
+description: This Chart deploys kubecost.
+dependencies:
+  - name: cost-analyzer
+    version: 2.3.0
+    repository: https://kubecost.github.io/cost-analyzer/

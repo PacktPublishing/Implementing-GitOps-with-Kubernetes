@@ -1,0 +1,21 @@
+cost-analyzer:
+  global:
+    notifications:
+      alertConfigs:
+        frontendUrl: http://localhost:9090
+        alerts:
+          - type: budget
+            threshold: 100
+            window: 30d
+            aggregation: namespace
+            filter: projec-x
+            ownerContact:
+              - owner@example.com
+            # optional, used for alert-specific Slack and Microsoft Teams alerts
+            slackWebhookUrl: https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXXHALLO12
+            msTeamsWebhookUrl: https://xxxxx.webhook.office.com/webhookb2/XXXXXXXXXXXXXXXXXXXXXXXX/IncomingWebhook/XXXXXXXXXXXXXXXXXXXXXXXX
+          - type: budget
+            threshold: 500
+            window: 30d
+            aggregation: cluster
+            filter: cluster-one
