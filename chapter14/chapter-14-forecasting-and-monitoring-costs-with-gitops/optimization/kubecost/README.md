@@ -28,7 +28,7 @@ To set up alerts in the Kubecost UI, follow these steps:
 
 Here is an example of how you can set up an alert for a alerts in the Kubecost UI:
 
-![Kubecost UI Setup Alert](kubecost_ui_setup_alert.gif)
+![Kubecost UI Setup Alert](images/kubecost_ui_setup_alert.gif)
 
 ### Setup Budget + Alert in the Kubecost UI
 
@@ -43,7 +43,7 @@ To set up a budget with an alert in the Kubecost UI:
 
 Here is an example of how you can set up an alert for a budget + alert in the Kubecost UI:
 
-![Kubecost UI Setup Budget + Alert](kubecost_ui_budget_setup_alert.gif)
+![Kubecost UI Setup Budget + Alert](images/kubecost_ui_budget_setup_alert.gif)
 
 ## Kubecost Helm Chart
 
@@ -57,7 +57,7 @@ To set up alerts using the `values.yaml` file in the Kubecost Helm Chart:
 2. **Add Alert Configuration**: Insert the alert configuration under the `alerts` section. Below is an example configuration:
 
    ```yaml
-   ...
+   ---
    alerts:
      - type: budget
        threshold: 100
