@@ -27,10 +27,10 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git #custom values repo
+        - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git #custom values repo
           targetRevision: main #point to main branch of custom values repo
           ref: valuesRepo #use valuesRepo variable
-        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git #umbrella repo
+        - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git #umbrella repo
           targetRevision: "{{values.branch}}" #point to the branch depending on the cluster branch pointer
           path: "./chapter05/chapter-5-building-a-service-catalog-for-kubernetes/networking/ingress-nginx" #path to the application in the umbrella repo
           helm:

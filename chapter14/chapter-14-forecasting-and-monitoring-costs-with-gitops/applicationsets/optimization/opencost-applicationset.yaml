@@ -25,10 +25,10 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+        - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
           targetRevision: main
           ref: valuesRepo
-        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+        - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
           targetRevision: "{{values.branch}}"
           path: "./chapter14/chapter-14-forecasting-and-monitoring-costs-with-gitops/optimization/opencost"
           helm:

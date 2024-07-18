@@ -19,7 +19,7 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+        - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
           targetRevision: "{{values.branch}}"
           path: ./chapter05/chapter-5-the-app-of-apps-approach/app-of-app/simple-webapp
       destination:

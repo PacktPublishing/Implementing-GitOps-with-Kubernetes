@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+    repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
     targetRevision: main
     path: ./chapter05/chapter-5-the-app-of-apps-approach/app-of-apps/simple-webapps
     directory:

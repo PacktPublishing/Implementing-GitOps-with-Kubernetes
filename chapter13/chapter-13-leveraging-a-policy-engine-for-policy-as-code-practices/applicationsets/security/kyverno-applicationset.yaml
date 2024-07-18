@@ -25,10 +25,10 @@ spec:
     spec:
       project: default
       sources:
-        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+        - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
           targetRevision: "{{values.branch}}"
           path: "./chapter13/chapter-13-leveraging-a-policy-engine-for-policy-as-code-practices/kustomize/security/kyverno/policies/base"
-        - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+        - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
           targetRevision: "{{values.branch}}"
           path: "./chapter13/chapter-13-leveraging-a-policy-engine-for-policy-as-code-practices/security/kyverno"
           helm:

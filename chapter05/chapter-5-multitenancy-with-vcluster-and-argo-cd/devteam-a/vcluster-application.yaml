@@ -9,13 +9,13 @@ spec:
     namespace: vcluster-team-a
     server: "https://kubernetes.default.svc"
   sources:
-    - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+    - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
       targetRevision: main
       ref: valuesRepo
-    # - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+    # - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
     #   path: "./chapter05/chapter-5-building-a-service-catalog-for-kubernetes/cluster/vcluster-team-a/"
     #   targetRevision: main
-    - repoURL: git@github.com:PacktPublishing/GitOps-for-Kubernetes-Deployment.git
+    - repoURL: git@github.com:PacktPublishing/Implementing-GitOps-with-Kubernetes.git
       targetRevision: main
       path: "./chapter05/chapter-5-building-a-service-catalog-for-kubernetes/optimization/vcluster"
       helm:
